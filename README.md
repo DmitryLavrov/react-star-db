@@ -2,3 +2,11 @@
 ### React App
 ___
 Use Bootstrap dark theme from https://bootswatch.com/
+
+API server with "Star Wars" database: https://swapi.dev
+
+Pictures are getting from https://starwars-visualguide.com/assets/img/planets/
+
+Regular expressions made using https://regex101.com/
+
+Spinner made using https://loading.io/
