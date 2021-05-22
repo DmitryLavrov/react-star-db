@@ -7,16 +7,31 @@ import ErrorIndicator from '../error-indicator'
 
 export default class RandomPlanet extends Component {
   swApi = new SwApiService()
-
-  constructor() {
-    super()
-    this.updatePlanet()
-  }
+  interval
 
   state = {
     planet: {},
     loading: true,
     error: false
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount()')
+    this.interval = setInterval(() =>
+      this.updatePlanet(), 10000)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('componentDidUpdate()')
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount()')
+    clearTimeout(this.interval)
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log('componentDidCatch()')
   }
 
   onError = () => {
@@ -27,11 +42,14 @@ export default class RandomPlanet extends Component {
   }
 
   onPlanetLoaded = (planet) => {
+    console.log('loaded')
     this.setState({planet, loading: false})
   }
 
-  updatePlanet() {
+  updatePlanet = () => {
     const id = Math.floor(Math.random() * 20 + 2)
+    const time = (new Date()).getSeconds()
+    console.log('update', time)
     this.swApi
       .getPlanet(id)
       .then(this.onPlanetLoaded)
@@ -39,6 +57,7 @@ export default class RandomPlanet extends Component {
   }
 
   render() {
+    console.log('render')
     const {planet, loading, error} = this.state
 
     const showPlanet = !(error || loading)
