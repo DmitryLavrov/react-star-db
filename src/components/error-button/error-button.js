@@ -15,7 +15,8 @@ export default class ErrorButton extends Component {
     }
 
     return (
-      <button className="btn btn-info" onClick={this.makeError}>
+      <button className="error-button btn btn-danger btn-lg"
+              onClick={this.makeError}>
         Make Error
       </button>
     )

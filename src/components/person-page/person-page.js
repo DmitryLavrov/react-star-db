@@ -1,37 +1,36 @@
 import React, {Component} from "react"
 import ItemList from "../item-list"
 import PersonDetails from "../person-details"
-import ErrorIndicator from "../error-indicator"
+import SwApiService from "../../services/swapi-service"
+import Row from "../row"
+import ErrorBoundary from "../error-boundary"
 
 export default class PersonPage extends Component {
-  state= {
+  swApiService = new SwApiService()
+  state = {
     selectedPerson: 4,
-    hasError: false
   }
 
-  componentDidCatch(error, errorInfo) {
-    this.setState({hasError: true})
-  }
-
-  onPersonSelected =(id) => {
+  onItemSelected = (id) => {
     this.setState({selectedPerson: id})
   }
 
   render() {
-    if (this.state.hasError) {
-      return <ErrorIndicator/>
-    }
+    const itemList = (
+      <ItemList onItemSelected={this.onItemSelected}
+                getData={this.swApiService.getAllPeople}>
+        {i => (`${i.name} (${i.birthYear})`)}
+      </ItemList>
+    )
 
-    return (
-      <div className="row mb2">
-        <div className="col-md-6">
-          <ItemList onPersonSelected={this.onPersonSelected} />
-          <p>---</p>
-        </div>
-        <div className="col-md-6">
-          <PersonDetails personId={this.state.selectedPerson}/>
-        </div>
-      </div>
+    const personDetails = (
+      <PersonDetails personId={this.state.selectedPerson}/>
+    )
+
+     return (
+      <ErrorBoundary>
+        <Row left={itemList} right={personDetails}/>
+      </ErrorBoundary>
     )
   }
 }

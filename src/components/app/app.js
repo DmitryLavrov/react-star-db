@@ -7,10 +7,14 @@ import './app.css'
 import ErrorButton from "../error-button"
 import ErrorIndicator from "../error-indicator"
 import PersonPage from "../person-page/person-page"
+import ItemList from "../item-list"
+import PersonDetails from "../person-details"
+import SwApiService from "../../services/swapi-service"
 
 export default class App extends Component {
+  swApiService = new SwApiService()
 
-  state= {
+  state = {
     showPlanet: true,
     hasError: false
   }
@@ -34,17 +38,43 @@ export default class App extends Component {
     const randomPlanetView = showPlanet ? <RandomPlanet/> : null
 
     return (
-      <div>
+      <div className="stardb-app">
         <Header/>
         {randomPlanetView}
-        <button className="btn btn-outline-info"
-                onClick={this.onClickButton}>
-          Toggle Random Planet
-        </button>
-        <ErrorButton />
+
+        <div className="row mb2 button-row">
+          <button className="toggle-planet btn btn-warning btn-lg"
+                  onClick={this.onClickButton}>
+            Toggle Random Planet
+          </button>
+          <ErrorButton/>
+        </div>
+
         <PersonPage/>
-        <PersonPage/>
-        <PersonPage/>
+
+        {/*<div className="row mb2">*/}
+        {/*  <div className="col-md-6">*/}
+        {/*    <ItemList onItemSelected={this.onItemSelected}*/}
+        {/*              getData={this.swApiService.getAllPlanets}>*/}
+        {/*      {i => (<span>{i.name} (${i.diameter})<button>!</button></span>)}*/}
+        {/*    </ItemList>*/}
+        {/*  </div>*/}
+        {/*  <div className="col-md-6">*/}
+        {/*    <PersonDetails personId={this.state.selectedPerson}/>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+
+        {/*<div className="row mb2">*/}
+        {/*  <div className="col-md-6">*/}
+        {/*    <ItemList onItemSelected={this.onItemSelected}*/}
+        {/*              getData={this.swApiService.getAllStarships}>*/}
+        {/*      {i => (`${i.name} (${i.model})`)}*/}
+        {/*    </ItemList>*/}
+        {/*  </div>*/}
+        {/*  <div className="col-md-6">*/}
+        {/*    <PersonDetails personId={this.state.selectedPerson}/>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
     )
   }

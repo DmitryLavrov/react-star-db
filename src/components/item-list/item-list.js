@@ -1,45 +1,47 @@
 import React, {Component} from 'react'
 
 import './item-list.css'
-import SwApiService from '../../services/swapi-service'
 import Spinner from '../spinner'
 
 export default class ItemList extends Component {
-  swApi = new SwApiService()
+
   state = {
-    peopleList: []
+    itemList: []
   }
 
   componentDidMount() {
-    this.swApi.getAllPeople()
-      .then(peopleList => {
-        this.setState({peopleList})
+    this.props.getData()
+      .then(itemList => {
+        this.setState({itemList})
       })
   }
 
   onClickPerson = (id) => {
-    this.props.onPersonSelected(id)
+    this.props.onItemSelected(id)
   }
 
   renderItems = (items) => {
-    return items.map(({id, name}) => {
+    return items.map(item => {
+      const {id} = item
+      const label = this.props.children(item)
+
       return (
         <li className="list-group-item"
             key={id} onClick={() => this.onClickPerson(id)}>
-          {name}
+          {label}
         </li>
       )
     })
   }
 
   render() {
-    const {peopleList} = this.state
+    const {itemList} = this.state
 
-    if (!peopleList) {
+    if (!itemList) {
       return <Spinner/>
     }
 
-    const items = this.renderItems(peopleList)
+    const items = this.renderItems(itemList)
 
     return (
       <ul className="item-list list-group">
