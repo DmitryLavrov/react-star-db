@@ -17,8 +17,8 @@ export default class SwApiService {
     return res.results.map(this._transformPerson)
   }
 
-  getPerson(id) {
-    const person = this.getResource(`/people/${id}/`)
+  async getPerson(id) {
+    const person = await this.getResource(`/people/${id}/`)
     return this._transformPerson(person)
   }
 
