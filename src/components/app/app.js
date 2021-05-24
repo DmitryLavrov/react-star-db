@@ -2,25 +2,11 @@ import React, {Component} from 'react'
 
 import Header from '../header'
 import RandomPlanet from '../random-planet'
-<<<<<<< HEAD
-import ItemList from '../item-list'
-import PersonDetails from '../person-details'
-
-import './app.css'
-
-export default class App extends Component {
-
-  state= {
-    showPlanet: true,
-    personSelected: null
-=======
 
 import './app.css'
 import ErrorButton from "../error-button"
 import ErrorIndicator from "../error-indicator"
 import PersonPage from "../person-page/person-page"
-import ItemList from "../item-list"
-import PersonDetails from "../person-details"
 import SwApiService from "../../services/swapi-service"
 
 export default class App extends Component {
@@ -33,7 +19,6 @@ export default class App extends Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({hasError: true})
->>>>>>> d43b64784f1c475be8f867678ab0b185d7172271
   }
 
   onClickButton = () => {
@@ -41,42 +26,16 @@ export default class App extends Component {
     this.setState({showPlanet: !showPlanet})
   }
 
-<<<<<<< HEAD
-  onPersonSelected =(id) => {
-    this.setState({personSelected: id})
-    console.log(id)
-  }
-
-  render() {
-    const {showPlanet, personSelected} = this.state
-=======
   render() {
     if (this.state.hasError) {
       return <ErrorIndicator/>
     }
 
     const {showPlanet} = this.state
->>>>>>> d43b64784f1c475be8f867678ab0b185d7172271
 
     const randomPlanetView = showPlanet ? <RandomPlanet/> : null
 
     return (
-<<<<<<< HEAD
-      <div>
-        <Header/>
-        {randomPlanetView}
-        <button className="btn btn-outline-info"
-                onClick={this.onClickButton}>
-          Toggle Random Planet
-        </button>
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onPersonSelected={this.onPersonSelected} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={personSelected}/>
-          </div>
-=======
       <div className="stardb-app">
         <Header/>
         {randomPlanetView}
@@ -87,7 +46,6 @@ export default class App extends Component {
             Toggle Random Planet
           </button>
           <ErrorButton/>
->>>>>>> d43b64784f1c475be8f867678ab0b185d7172271
         </div>
 
         <PersonPage/>
