@@ -1,52 +1,32 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 import './item-list.css'
-import Spinner from '../spinner'
+import SwApiService from '../../services/swapi-service'
+import {withData} from '../hoc-helpers'
 
-export default class ItemList extends Component {
+const ItemList = (props) => {
 
-  state = {
-    itemList: []
-  }
+    const {data, onItemSelected, children: renderLabel} = props
 
-  componentDidMount() {
-    this.props.getData()
-      .then(itemList => {
-        this.setState({itemList})
-      })
-  }
-
-  onClickPerson = (id) => {
-    this.props.onItemSelected(id)
-  }
-
-  renderItems = (items) => {
-    return items.map(item => {
+    const items = data.map(item => {
       const {id} = item
-      const label = this.props.children(item)
+      const label = renderLabel(item)
 
       return (
         <li className="list-group-item"
-            key={id} onClick={() => this.onClickPerson(id)}>
+            key={id} onClick={() => onItemSelected(id)}>
           {label}
         </li>
       )
     })
-  }
-
-  render() {
-    const {itemList} = this.state
-
-    if (!itemList) {
-      return <Spinner/>
-    }
-
-    const items = this.renderItems(itemList)
 
     return (
       <ul className="item-list list-group">
         {items}
       </ul>
     )
-  }
 }
+
+const {getAllPeople} = new SwApiService()
+
+export default withData(ItemList, getAllPeople)

@@ -10,6 +10,7 @@ import PersonPage from "../person-page/person-page"
 import SwApiService from "../../services/swapi-service"
 import Row from '../row'
 import ItemDetails, {Record} from '../item-details'
+import ItemList from '../item-list'
 
 export default class App extends Component {
   swApiService = new SwApiService()
@@ -56,7 +57,31 @@ export default class App extends Component {
       <div className="stardb-app">
         <Header/>
 
-        <Row left={personDetails} right={starshipDetails}/>
+        {/*<Row left={personDetails} right={starshipDetails}/>*/}
+
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList onItemSelected={this.onItemSelected}
+                      getData={this.swApiService.getAllPlanets}>
+              {i => (<span>{i.name} (${i.diameter}) <button>!</button></span>)}
+            </ItemList>
+          </div>
+          <div className="col-md-6">
+            <ItemDetails personId={this.state.selectedPerson}/>
+          </div>
+        </div>
+
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList onItemSelected={this.onItemSelected}
+                      getData={this.swApiService.getAllStarships}>
+              {i => (`${i.name} (${i.model})`)}
+            </ItemList>
+          </div>
+          <div className="col-md-6">
+            <ItemDetails personId={this.state.selectedPerson}/>
+          </div>
+        </div>
 
       </div>
     )
