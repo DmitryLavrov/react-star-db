@@ -1,14 +1,11 @@
 import React, {Component} from 'react'
 
 import './item-details.css'
-import SwApiService from '../../services/swapi-service'
 import Spinner from '../spinner'
 import ErrorIndicator from '../error-indicator'
 import ErrorButton from '../error-button'
 
 export default class ItemDetails extends Component {
-  swApiService = new SwApiService()
-
   state = {
     item: null,
     loading: true,
@@ -20,7 +17,10 @@ export default class ItemDetails extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.itemId !== prevProps.itemId) this.updateItem()
+    if (this.props.itemId !== prevProps.itemId
+      || this.props.getData !== prevProps.getData) {
+      this.updateItem()
+    }
   }
 
   onItemLoaded = (item) => {
@@ -50,7 +50,7 @@ export default class ItemDetails extends Component {
     }
 
     const {item, loading, hasError} = this.state
-    const {id, imageUrl, name, gender, birthYear, eyeColor} = item
+    const {imageUrl, name} = item
 
     const showItem = !(loading || hasError)
     const spinner = loading ? <Spinner/> : null

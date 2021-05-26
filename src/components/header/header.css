@@ -29,3 +29,8 @@
 .header a {
   text-decoration: none;
 }
+
+.header button {
+  height: 2.2rem;
+  margin: 3px;
+}

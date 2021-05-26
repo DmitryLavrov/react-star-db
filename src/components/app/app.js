@@ -1,22 +1,26 @@
 import React, {Component} from 'react'
 
+import './app.css'
 import Header from '../header'
 import RandomPlanet from '../random-planet'
-
-import './app.css'
-import ErrorButton from "../error-button"
-import ErrorIndicator from "../error-indicator"
-import PersonPage from "../person-page/person-page"
-import SwApiService from "../../services/swapi-service"
+import ErrorButton from '../error-button'
+import ErrorIndicator from '../error-indicator'
+import SwApiService from '../../services/swapi-service'
 import Row from '../row'
 import ItemDetails, {Record} from '../item-details'
-import ItemList from '../item-list'
+import ErrorBoundary from '../error-boundary'
+import {PersonDetails, PersonList, PlanetDetails, PlanetList, StarshipDetails, StarshipList} from '../sw-components'
+import {SwApiServiceProvider} from '../swapi-service-context'
+import DummySwApiService from '../swapi-service-context'
+
 
 export default class App extends Component {
-  swApiService = new SwApiService()
+  // swApiService = new SwApiService()
+  // swApiService = new DummySwApiService()
 
   state = {
     showPlanet: true,
+    swApiService: new SwApiService(),
     hasError: false
   }
 
@@ -24,9 +28,23 @@ export default class App extends Component {
     this.setState({hasError: true})
   }
 
+  updateSta
+
   onClickButton = () => {
     const {showPlanet} = this.state
     this.setState({showPlanet: !showPlanet})
+  }
+
+  switchDataSource = () => {
+    this.setState(({swApiService}) => {
+      const Service = swApiService instanceof SwApiService
+        ? DummySwApiService
+        : SwApiService
+      console.log('switched to',Service.name)
+      return {
+        swApiService: new Service()
+      }
+    })
   }
 
   render() {
@@ -38,7 +56,7 @@ export default class App extends Component {
 
     const randomPlanetView = showPlanet ? <RandomPlanet/> : null
 
-    const {getPerson, getStarship} = this.swApiService
+    const {getPerson, getStarship} = this.state.swApiService
 
     const personDetails =
       <ItemDetails itemId={11}
@@ -54,36 +72,28 @@ export default class App extends Component {
       </ItemDetails>
 
     return (
-      <div className="stardb-app">
-        <Header/>
+      <ErrorBoundary>
+        <SwApiServiceProvider value={this.state.swApiService}>
+          <div className="stardb-app">
+            <Header switchDataSource={this.switchDataSource}/>
 
-        {/*<Row left={personDetails} right={starshipDetails}/>*/}
+            <PersonList/>
 
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onItemSelected={this.onItemSelected}
-                      getData={this.swApiService.getAllPlanets}>
-              {i => (<span>{i.name} (${i.diameter}) <button>!</button></span>)}
-            </ItemList>
-          </div>
-          <div className="col-md-6">
-            <ItemDetails personId={this.state.selectedPerson}/>
-          </div>
-        </div>
+            <PersonDetails itemId={11}/>
 
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onItemSelected={this.onItemSelected}
-                      getData={this.swApiService.getAllStarships}>
-              {i => (`${i.name} (${i.model})`)}
-            </ItemList>
-          </div>
-          <div className="col-md-6">
-            <ItemDetails personId={this.state.selectedPerson}/>
-          </div>
-        </div>
+            <PlanetList/>
 
-      </div>
+            <PlanetDetails itemId={5}/>
+
+            <StarshipList/>
+
+            <StarshipDetails itemId={9}/>
+
+            {/*<Row left={personDetails} right={starshipDetails}/>*/}
+
+          </div>
+        </SwApiServiceProvider>
+      </ErrorBoundary>
     )
   }
 };
