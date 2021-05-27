@@ -16,4 +16,4 @@ const mapMethodsToProps = (swApiService) => {
   }
 }
 
-export default withSwApiService(StarshipDetails, mapMethodsToProps)
+export default withSwApiService(mapMethodsToProps)(StarshipDetails)

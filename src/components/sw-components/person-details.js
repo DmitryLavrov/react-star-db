@@ -15,4 +15,4 @@ const mapMethodsToProps = (swApiService) => {
   }
 }
 
-export default withSwApiService(PersonDetails, mapMethodsToProps)
+export default withSwApiService(mapMethodsToProps)(PersonDetails)

@@ -3,7 +3,7 @@ import React from 'react'
 import {withData, withSwApiService} from '../hoc-helpers'
 import ItemList from '../item-list'
 
-const withChildFunction = (Wrapped, fn) => {
+const withChildFunction = (fn) => (Wrapped) => {
   return (props) => {
     return (
       <Wrapped {...props}>
@@ -28,20 +28,29 @@ const mapStarshipMethodsToProps = (swApiService) => {
   return {getData: swApiService.getAllStarships}
 }
 
-const PersonList = withSwApiService(
-  withData(
-    withChildFunction(ItemList, renderName)),
-  mapPersonMethodsToProps)
 
-const PlanetList = withSwApiService(
-  withData(
-    withChildFunction(ItemList, renderName)),
-  mapPlanetMethodsToProps)
+const pipe = (...functions) => x => functions.reduce((acc, fn) => fn(acc), x)
 
-const StarshipList = withSwApiService(
-  withData(
-    withChildFunction(ItemList, renderNameAndModel)),
-  mapStarshipMethodsToProps)
+const PersonList = pipe(withChildFunction(renderName),
+                        withData,
+                        withSwApiService(mapPersonMethodsToProps))(ItemList)
+
+// const PersonList = withSwApiService(mapPersonMethodsToProps)(
+//                      withData(
+//                        withChildFunction(renderName)(
+//                          ItemList)))
+
+
+
+const PlanetList = withSwApiService(mapPlanetMethodsToProps)(
+                     withData(
+                       withChildFunction(renderName)(
+                         ItemList)))
+
+const StarshipList = withSwApiService(mapStarshipMethodsToProps)(
+                       withData(
+                         withChildFunction(renderNameAndModel)(
+                           ItemList)))
 
 export {
   PersonList,

@@ -16,4 +16,4 @@ const mapMethodsToProps = (swApiService) => {
   }
 }
 
-export default withSwApiService(PlanetDetails, mapMethodsToProps)
+export default withSwApiService(mapMethodsToProps)(PlanetDetails)
