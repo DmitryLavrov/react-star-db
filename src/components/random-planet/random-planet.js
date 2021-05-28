@@ -1,11 +1,29 @@
 import React, {Component} from 'react'
+import PropTypes from "prop-types"
 
 import './random-planet.css'
 import SwApiService from '../../services/swapi-service'
 import Spinner from '../spinner'
 import ErrorIndicator from '../error-indicator'
 
+
 export default class RandomPlanet extends Component {
+  static defaultProps = {updateInterval: 10000}
+
+  static propTypes = {
+    // updateInterval: (props, propName, compName) => {
+    //   const Value = props[propName]
+    //
+    //   if (typeof Value === 'number' && !Value.isNaN) {
+    //     return null
+    //   }
+    //
+    //   return new TypeError( `${compName}:${propName} must be a number!`)
+    // }
+
+    updateInterval: PropTypes.number
+  }
+
   swApi = new SwApiService()
   interval
 
@@ -17,7 +35,7 @@ export default class RandomPlanet extends Component {
 
   componentDidMount() {
     this.updatePlanet()
-    this.interval = setInterval(this.updatePlanet, 10000)
+    this.interval = setInterval(this.updatePlanet, this.props.updateInterval)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -67,6 +85,7 @@ export default class RandomPlanet extends Component {
     )
   }
 }
+
 
 const PlanetView = ({planet}) => {
   const {id, name, population, rotationPeriod, diameter} = planet
