@@ -18,3 +18,47 @@ See documentation about React PropType on [reactjs.org](https://reactjs.org/docs
 
 Another custom React PropType validators form [Airbnb](https://github.com/airbnb/prop-types)
 ___
+## React Router
+Use [react-router-dom](https://www.npmjs.com/package/react-router-dom) for web app
+```
+npm install --save react-router-dom
+```
+Simple routes
+```javascript   
+import {BrowserRouter, Route} from 'react-router-dom'
+
+<BrowserRouter>
+    <Route path={"/"} exact render={() => <h2>Welcome to StarDB</h2>}/>
+    <Route path={"/people"} exact render={() => <h2>People</h2>}/>
+    
+    <Route path={"/people"} component={PeoplePage}/>
+    <Route path={"/planets"} component={PlanetsPage}/>
+    <Route path={"/starships"} component={StarshipsPage}/>
+</BrowserRouter>              
+```
+Use `<Link>` instead of `<a>`
+```javascript  
+import {Link} from "react-router-dom"
+   
+<Link to="/people">People</Link>
+```
+Route to detail page
+```javascript
+<Route path={"/starships"} exact component={StarshipsPage}/>
+<Route path={"/starships/:id"} exact render={({match}) => {
+  return <StarshipDetails itemId={match.params.id}/>
+}}/>
+```
+Route using HOC withRouter
+
+```javascript
+import {withRouter} from "react-router-dom"
+
+const StarshipsPage = ({history}) => {
+  return <StarshipList onItemSelected={(itemId) => {
+    history.push(`/starships/${itemId}`)
+  }}/>
+}
+
+export default withRouter(StarshipsPage)
+```
