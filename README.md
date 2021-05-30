@@ -49,7 +49,7 @@ Route to detail page
   return <StarshipDetails itemId={match.params.id}/>
 }}/>
 ```
-Route using HOC withRouter
+Route using HOC withRouter - access to the history object
 
 ```javascript
 import {withRouter} from "react-router-dom"
@@ -61,4 +61,14 @@ const StarshipsPage = ({history}) => {
 }
 
 export default withRouter(StarshipsPage)
+```
+Route at the same page using history object
+```javascript
+const PeoplePage = ({match, history}) => {
+    return (
+      <Row left={<PersonList onItemSelected={id => history.push(id)}/>}
+           right={<PersonDetails itemId={match.params.id}/>}
+      />
+    )
+}
 ```

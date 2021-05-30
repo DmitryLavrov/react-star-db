@@ -8,7 +8,7 @@ import SwApiService from '../../services/swapi-service'
 import ErrorBoundary from '../error-boundary'
 import {SwApiServiceProvider} from '../swapi-service-context'
 import DummySwApiService from '../swapi-service-context'
-import {PeoplePage} from "../pages"
+import {LoginPage, PeoplePage, SecretPage} from "../pages"
 import {PlanetsPage} from "../pages"
 import {StarshipsPage} from "../pages"
 import {StarshipDetails} from "../sw-components/details"
@@ -41,7 +41,7 @@ export default class App extends Component {
 
               <Route path={"/people"} exact render={() => <h2>People</h2>}/>
 
-              <Route path={"/people"} component={PeoplePage}/>
+              <Route path={"/people/:id?"} component={PeoplePage}/>
 
               <Route path={"/planets"} component={PlanetsPage}/>
 
@@ -50,6 +50,10 @@ export default class App extends Component {
               <Route path={"/starships/:id"} exact render={({match}) => {
                 return <StarshipDetails itemId={match.params.id}/>
               }}/>
+
+              <Route path={"/login"} component={LoginPage}/>
+
+              <Route path={"/secret"} component={SecretPage}/>
 
             </div>
           </BrowserRouter>
