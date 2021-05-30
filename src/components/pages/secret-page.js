@@ -1,15 +1,16 @@
 import React from "react"
+import {Redirect} from "react-router-dom"
 
 const SecretPage = ({isLoggedIn}) => {
 
   if (isLoggedIn) {
     return (
       <div className="jumbotron text-center">
-        <h2>The page full of secrets</h2>
+        <h2>The page is full of secrets</h2>
       </div>
     )
   }
-  return <p>You have not access to this page</p>
+  return <Redirect to="/login"/>
 }
 
 export default SecretPage

@@ -23,7 +23,9 @@ Use [react-router-dom](https://www.npmjs.com/package/react-router-dom) for web a
 ```
 npm install --save react-router-dom
 ```
-Simple routes
+`<BrowserRouter>` and `<Route>`.\
+Property `component` to render Component\
+Property `render` to render Function
 ```javascript   
 import {BrowserRouter, Route} from 'react-router-dom'
 
@@ -71,4 +73,21 @@ const PeoplePage = ({match, history}) => {
       />
     )
 }
+```
+Component <Redirect>
+```javascript
+import {Redirect} from 'react-router-dom'
+
+const LoginPage = ({isLoggedIn, onLogin}) => {
+  if(isLoggedIn) return <Redirect to="/"/>
+```
+`<Switch>` render only first element match to path
+```javascript
+<Switch>
+  <Route path="books" .../>
+  <Route path="blog" .../>
+
+  <Route render={() => <p>Can't find this page</p>}/>
+  // or <Redirect to="/"/>
+</Switch>
 ```
